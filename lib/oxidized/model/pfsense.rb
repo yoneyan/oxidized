@@ -1,4 +1,7 @@
+require_relative 'pfsense-parse'
+
 class PfSense < Oxidized::Model
+  include PfSenseParse
   # use other use than 'admin' user, 'admin' user cannot get ssh/exec. See issue #535
 
   cmd :all do |cfg|

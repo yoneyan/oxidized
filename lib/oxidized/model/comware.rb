@@ -1,4 +1,7 @@
+require_relative 'comware-parse'
+
 class Comware < Oxidized::Model
+  include ComwareParse
   # HP (A-series)/H3C/3Com Comware
 
   # sometimes the prompt might have a leading nul or trailing ASCII Bell (^G)
