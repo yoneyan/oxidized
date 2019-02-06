@@ -160,6 +160,7 @@ module Oxidized
       procs[:post].each do |post_proc|
         outputs << process_cmd_output(instance_eval(&post_proc), '')
       end
+      # TODO: call the formalise if it exists, then it can still run cmd etc iif it needs to fetch new shit
       outputs
     end
 
@@ -173,6 +174,10 @@ module Oxidized
 
     def screenscrape
       @input.class.to_s.match(/Telnet/) || vars(:ssh_no_exec)
+    end
+
+    def formal
+      node.formal
     end
 
     private

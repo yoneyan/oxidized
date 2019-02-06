@@ -2,11 +2,12 @@ module Oxidized
   require 'resolv'
   require 'ostruct'
   require_relative 'node/stats'
+  require_relative '../formal'
   class MethodNotFound < OxidizedError; end
   class ModelNotFound  < OxidizedError; end
   class Node
-    attr_reader :name, :ip, :model, :input, :output, :group, :auth, :prompt, :vars, :last, :repo
-    attr_accessor :running, :user, :email, :msg, :from, :stats, :retry, :parsed
+    attr_reader :name, :ip, :model, :input, :output, :group, :auth, :prompt, :vars, :last, :repo, :formal
+    attr_accessor :running, :user, :email, :msg, :from, :stats, :retry
     alias running? running
 
     def initialize(opt)
@@ -28,7 +29,7 @@ module Oxidized
       @stats          = Stats.new
       @retry          = 0
       @repo           = resolve_repo opt
-      @parsed         = nil
+      @formal         = Formal.new
 
       # model instance needs to access node instance
       @model.node = self
@@ -111,7 +112,6 @@ module Oxidized
           time:   @last.time
         }
       end
-      h[:parsed] = @parsed.to_h if @parsed
       h
     end
 
@@ -135,14 +135,6 @@ module Oxidized
 
     def modified
       @stats.update_mtime
-    end
-
-    def parse config
-      if @model.respond_to? :parse
-        return @model.parse config #@output.new.fetch self, nil
-      end
-
-      return nil
     end
 
     private

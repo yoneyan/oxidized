@@ -45,6 +45,7 @@ module Oxidized
 
     def add_model(name)
       loader @model, Config::ModelDir, "model", name
+      load_formal(name)
     end
 
     def add_hook(name)
@@ -59,6 +60,10 @@ module Oxidized
       map   = Manager.load(dir, name) if File.exist? File.join(dir, name + ".rb")
       map ||= Manager.load(global_dir, name)
       hash.merge!(map) if map
+    end
+
+    def load_formal(name)
+      ## FIXME, maybe refactor loader/Manager.load
     end
   end
 end
